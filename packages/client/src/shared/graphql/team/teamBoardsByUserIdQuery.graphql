@@ -1,0 +1,7 @@
+#import '../fragments/teamBoardFragment.graphql'
+
+query TeamBoardsByUserIdQuery {
+  allTeamsByUserId {
+    ...TeamBoard
+  }
+}

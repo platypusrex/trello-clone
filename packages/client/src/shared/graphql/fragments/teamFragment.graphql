@@ -1,0 +1,5 @@
+fragment Team on Team {
+  id
+  name
+  description
+}

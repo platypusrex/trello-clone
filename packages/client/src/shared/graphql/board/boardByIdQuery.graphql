@@ -1,0 +1,7 @@
+#import '../fragments/boardDetailFragment.graphql'
+
+query BoardByIdQuery ($boardId: Float!) {
+  boardById(boardId: $boardId) {
+    ...BoardDetail
+  }
+}

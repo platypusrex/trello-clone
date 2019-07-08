@@ -1,0 +1,19 @@
+{
+  "name": "project-management",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "clean": "npx rimraf node_modules/ **/node_modules"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/**"
+    ],
+    "nohoist": [
+      "**/typeorm",
+      "**/typeorm/**"
+    ]
+  },
+  "author": "Frank Cooke"
+}

@@ -1,0 +1,7 @@
+#import '../fragments/listDetailFragment.graphql'
+
+mutation CreateListMutation ($input: CreateListInput!) {
+  createList (input: $input) {
+    ...ListDetail
+  }
+}

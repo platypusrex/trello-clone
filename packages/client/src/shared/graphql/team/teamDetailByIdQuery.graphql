@@ -1,0 +1,7 @@
+#import '../fragments/teamDetailFragment.graphql'
+
+query TeamDetailByIdQuery ($teamId: Float!) {
+  teamById(teamId: $teamId) {
+    ...TeamDetail
+  }
+}

@@ -1,0 +1,3 @@
+mutation DeleteListByIdMutation ($listId: Float!) {
+  deleteListById (listId: $listId)
+}

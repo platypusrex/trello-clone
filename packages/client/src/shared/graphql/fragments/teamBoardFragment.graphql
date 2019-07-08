@@ -1,0 +1,9 @@
+#import './teamFragment.graphql'
+#import './boardFragment.graphql'
+
+fragment TeamBoard on Team {
+  ...Team,
+  boards {
+    ...Board
+  }
+}

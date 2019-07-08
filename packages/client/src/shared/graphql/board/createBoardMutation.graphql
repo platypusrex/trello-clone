@@ -1,0 +1,7 @@
+#import '../fragments/boardFragment.graphql'
+
+mutation CreateBoardMutation ($input: CreateBoardInput!) {
+  createBoard(input: $input) {
+    ...Board
+  }
+}

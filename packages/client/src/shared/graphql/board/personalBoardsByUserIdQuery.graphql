@@ -1,0 +1,7 @@
+#import '../fragments/boardFragment.graphql'
+
+query PersonalBoardsByUserIdQuery {
+  allPersonalBoardsByUserId {
+    ...Board
+  }
+}

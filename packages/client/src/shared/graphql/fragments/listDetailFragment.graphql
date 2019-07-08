@@ -1,0 +1,8 @@
+#import './listFragment.graphql'
+
+fragment ListDetail on List {
+  ...List
+  position
+  createdAt
+  updatedAt
+}

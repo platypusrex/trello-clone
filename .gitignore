@@ -1,0 +1,14 @@
+# editor
+.idea
+
+# dependencies
+**/node_modules/
+
+# production
+packages/web/build
+
+# misc
+.DS_Store
+**/.env
+yarn-debug.log*
+yarn-error.log*

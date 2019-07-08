@@ -1,0 +1,7 @@
+fragment Card on Card {
+  id
+  title
+  description
+  updatedAt
+  createdAt
+}

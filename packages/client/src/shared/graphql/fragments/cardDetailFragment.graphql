@@ -1,0 +1,16 @@
+#import '../fragments/cardFragment.graphql'
+#import '../fragments/listFragment.graphql'
+#import '../fragments/userFragment.graphql'
+
+fragment CardDetail on Card {
+  ...Card
+  list {
+    ...List
+  }
+  creator {
+    ...User
+  }
+  assignedTo {
+    ...User
+  }
+}

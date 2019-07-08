@@ -1,0 +1,13 @@
+#import './userFragment.graphql'
+#import './teamFragment.graphql'
+#import './boardFragment.graphql'
+
+fragment UserDetail on User {
+  ...User
+  teams {
+    ...Team
+  }
+  boards {
+    ...Board
+  }
+}

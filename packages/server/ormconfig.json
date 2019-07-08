@@ -1,0 +1,13 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "prex",
+  "password": "prex",
+  "database": "project-management",
+  "synchronize": true,
+  "logging": true,
+  "entities": [
+    "src/entity/**/*.ts"
+  ]
+}

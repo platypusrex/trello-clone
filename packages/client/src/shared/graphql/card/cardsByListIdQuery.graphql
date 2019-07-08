@@ -1,0 +1,7 @@
+#import '../fragments/cardFragment.graphql'
+
+query CardsByListIdQuery ($listId: Float!) {
+  allCardsByListId (listId: $listId) {
+    ...Card
+  }
+}

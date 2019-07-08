@@ -1,0 +1,7 @@
+#import '../fragments/cardFragment.graphql'
+
+mutation CreateCardMutation ($input: CreateCardInput!) {
+  createCard (input: $input) {
+    ...Card
+  }
+}

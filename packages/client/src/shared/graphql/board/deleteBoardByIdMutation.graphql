@@ -1,0 +1,3 @@
+mutation DeleteBoardByIdMutation ($id: Float!) {
+  deleteBoardById(id: $id)
+}
