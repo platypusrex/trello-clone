@@ -5,7 +5,7 @@ export async function sendEmail (email: string, url: string) {
     service: 'SendGrid',
     auth: {
       user: 'apikey',
-      pass: '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'
+      pass: process.env.SEND_GRID_API_KEY
     }
   });
 
