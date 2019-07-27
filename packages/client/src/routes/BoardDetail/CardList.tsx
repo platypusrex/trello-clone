@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card } from 'antd';
 // import { Draggable, DraggableProvided, Droppable, DroppableProvided } from 'react-beautiful-dnd';
 import { Flex, FlexProps } from '../../shared/components/Flex';
+import { BoardCard } from './BoardCard';
 import { useCardsByListId } from '../../shared/hooks/card/useCardsByListId';
 import styled from '../../shared/styled';
 
@@ -21,20 +21,15 @@ interface ParentProps {
 export const CardList: React.FC<ParentProps> = ({ listId, children }) => {
   const { cards } = useCardsByListId(listId);
 
-  if (!cards) {
+  if (!cards || cards.length < 0) {
     return null;
   }
 
   return (
     <Flex flexDirection="column">
-      {cards.length > 0 &&
       <CardsWrapper flexDirection="column">
-        {cards.map((card, i) => (
-          <Card key={card.id} bodyStyle={{ padding: 12 }} hoverable={true}>
-            <Card.Meta description={card.title}/>
-          </Card>
-        ))}
-      </CardsWrapper>}
+        {cards.map(card => <BoardCard key={card.id} card={card}/>)}
+      </CardsWrapper>
 
       {children}
     </Flex>
