@@ -19,4 +19,17 @@ export class RecipeResolver {
 
     return recipe;
   }
+
+  @Query(() => Recipe)
+  async getRecipeById (
+    @Arg('recipeId') recipeId: number
+  ): Promise<Recipe | null> {
+    const recipe = await Recipe.findOne(recipeId);
+
+    if (!recipe) {
+      return null;
+    }
+
+    return recipe;
+  }
 }
