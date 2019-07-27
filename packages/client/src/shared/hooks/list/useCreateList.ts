@@ -13,27 +13,26 @@ export const useCreateList: UseCreateListProps = (boardId) => {
       CreateListMutationVariables
     >(createListMutation, {
       update: (store, { data }) => {
-        if (!data) {
+        if (!data || !data.createList) {
           return;
         }
 
-        const { createList } = data;
-        const listData = store.readQuery<ListsByBoardIdQuery>({
-          query: listsByBoardIdQuery,
-          variables: { boardId }
-        });
+        try {
+          const { createList } = data;
+          const options = { query: listsByBoardIdQuery, variables: { boardId } };
+          const listData = store.readQuery<ListsByBoardIdQuery>(options);
 
-        if (!listData || !listData.allListsByBoardId) {
-          return;
-        }
-
-        store.writeQuery<ListsByBoardIdQuery>({
-          query: listsByBoardIdQuery,
-          variables: { boardId },
-          data: {
-            allListsByBoardId: [ ...listData.allListsByBoardId, createList ]
+          if (!listData || !listData.allListsByBoardId) {
+            return;
           }
-        });
+
+          store.writeQuery<ListsByBoardIdQuery>({
+            ...options,
+            data: { allListsByBoardId: [ ...listData.allListsByBoardId, createList ] }
+          });
+        } catch (e) {
+          console.log('useCreateList cache update error', e);
+        }
       },
     });
 

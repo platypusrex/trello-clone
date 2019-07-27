@@ -3,7 +3,7 @@ import { DeleteTeamByIdMutation, DeleteTeamByIdMutationVariables, TeamsByUserIdQ
 import { deleteTeamByIdMutation, teamsByUserIdQuery } from '../../utils/graphqlFileLoader';
 import { useAsyncOpState, AsyncOpState } from '../useAsyncOpState';
 
-type UseDeleteTeamById = (id: number) => AsyncOpState &{
+type UseDeleteTeamById = (id: number) => AsyncOpState & {
   deleteTeam: () => Promise<void>;
 };
 
@@ -22,18 +22,23 @@ export const useDeleteTeamById: UseDeleteTeamById = (id) => {
             return;
           }
 
-          const teamsData = store.readQuery<TeamsByUserIdQuery>({ query: teamsByUserIdQuery });
+          try {
+            const options = { query: teamsByUserIdQuery };
+            const teamsData = store.readQuery<TeamsByUserIdQuery>(options);
 
-          if (!teamsData || !teamsData.allTeamsByUserId) {
-            return;
-          }
-
-          store.writeQuery<TeamsByUserIdQuery>({
-            query: teamsByUserIdQuery,
-            data: {
-              allTeamsByUserId: teamsData.allTeamsByUserId.filter(e => e.id !== id),
+            if (!teamsData || !teamsData.allTeamsByUserId) {
+              return;
             }
-          })
+
+            store.writeQuery<TeamsByUserIdQuery>({
+              ...options,
+              data: {
+                allTeamsByUserId: teamsData.allTeamsByUserId.filter(team => team.id !== id),
+              }
+            });
+          } catch (e) {
+            console.log('useDeleteTeamById cache update error', e);
+          }
         }
       });
 

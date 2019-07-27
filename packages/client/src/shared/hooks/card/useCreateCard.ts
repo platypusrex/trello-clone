@@ -18,27 +18,26 @@ export const useCreateCard: UseCreateCardProps = (listId) => {
       CreateCardMutationVariables
     >(createCardMutation, {
       update: (store, { data }) => {
-        if (!data) {
+        if (!data || !data.createCard) {
           return;
         }
 
-        const { createCard } = data;
-        const cardData = store.readQuery<CardsByListIdQuery, CardsByListIdQueryVariables>({
-          query: cardsByListIdQuery,
-          variables: { listId }
-        });
+        try {
+          const { createCard } = data;
+          const options = { query: cardsByListIdQuery, variables: { listId } };
+          const cardData = store.readQuery<CardsByListIdQuery, CardsByListIdQueryVariables>(options);
 
-        if (!cardData || !cardData.allCardsByListId) {
-          return;
-        }
-
-        store.writeQuery<CardsByListIdQuery, CardsByListIdQueryVariables>({
-          query: cardsByListIdQuery,
-          variables: { listId },
-          data: {
-            allCardsByListId: [ ...cardData.allCardsByListId, createCard ]
+          if (!cardData || !cardData.allCardsByListId) {
+            return;
           }
-        });
+
+          store.writeQuery<CardsByListIdQuery, CardsByListIdQueryVariables>({
+            ...options,
+            data: { allCardsByListId: [ ...cardData.allCardsByListId, createCard ] }
+          });
+        } catch (e) {
+          console.log('useCreateCard cache update error', e);
+        }
       },
     });
 

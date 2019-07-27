@@ -14,18 +14,26 @@ export const useCreateTeam: UseCreateTeamProps = () => {
     >(createTeamMutation, {
       refetchQueries: [{ query: teamBoardsByUserIdQuery }],
       update: (store, { data }) => {
-        if (!data) {
+        if (!data || !data.createTeam) {
           return;
         }
 
-        const { createTeam } = data;
-        const teamsData = store.readQuery<TeamsByUserIdQuery>({ query: teamsByUserIdQuery });
+        try {
+          const { createTeam } = data;
+          const options = { query: teamsByUserIdQuery };
+          const teamsData = store.readQuery<TeamsByUserIdQuery>(options);
 
-        if (!teamsData || !teamsData.allTeamsByUserId) {
-          return;
+          if (!teamsData || !teamsData.allTeamsByUserId) {
+            return;
+          }
+
+          store.writeQuery<TeamsByUserIdQuery>({
+            ...options,
+            data: { allTeamsByUserId: [ ...teamsData.allTeamsByUserId, createTeam ] }
+          });
+        } catch (e) {
+          console.log('useCreateTeam cache update error', e);
         }
-
-        teamsData.allTeamsByUserId.push(createTeam);
       }
     });
 

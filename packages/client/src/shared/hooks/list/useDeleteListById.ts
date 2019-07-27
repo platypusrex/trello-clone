@@ -26,11 +26,7 @@ export const useDeleteListById: UseDeleteListById = () => {
       }
 
       try {
-        const options = {
-          query: listsByBoardIdQuery,
-          variables: { boardId }
-        };
-
+        const options = { query: listsByBoardIdQuery, variables: { boardId } };
         const listsData = store.readQuery<ListsByBoardIdQuery, ListsByBoardIdQueryVariables>(options);
 
         if (!listsData || !listsData.allListsByBoardId) {
