@@ -28,20 +28,30 @@ const initialState: State = {
 
 interface ParentProps {
   listId: number;
+  boardId: number;
+  onShowForm: (isFormVisible: boolean) => void;
 }
 
-export const AddCard: React.FC<ParentProps> = ({ listId }) => {
+export const AddCard: React.FC<ParentProps> = ({ listId, boardId, onShowForm }) => {
   const [ state, setState ] = useState<State>(initialState);
+  const handleShowCardForm = (isAddCardFormVisible: boolean) => {
+    setState({ isAddCardFormVisible });
+    onShowForm(isAddCardFormVisible);
+  };
 
   const content = state.isAddCardFormVisible ? (
-    <CreateCardForm listId={listId} onCancel={() => setState({ isAddCardFormVisible: false })}/>
+    <CreateCardForm
+      listId={listId}
+      boardId={boardId}
+      onCancel={() => handleShowCardForm(false)}
+    />
   ) : (
     <CardButtonWrapper>
       <Button
         icon="plus"
         type="link"
         block={true}
-        onClick={() => setState({ isAddCardFormVisible: true })}
+        onClick={() => handleShowCardForm(true)}
       >
         Add another card...
       </Button>
