@@ -4,6 +4,7 @@ import { isAuthenticated } from './middleware/isAuthenticated';
 import { List } from '../entity/List';
 import { Board } from '../entity/Board';
 import { UpdateListInput } from './inputs/UpdateListInput';
+import { In } from 'typeorm';
 
 @Resolver()
 export class ListResolver {
@@ -66,6 +67,40 @@ export class ListResolver {
     await list.save();
 
     return list;
+  }
+
+  @UseMiddleware(isAuthenticated)
+  @Mutation(() => [List])
+  async updateListsById (
+    @Arg('input', () => [UpdateListInput]) listInputs: [UpdateListInput]
+  ): Promise<List[]> {
+    const listIds = listInputs.map(listInput => listInput.id);
+
+    const lists = await List.find({
+      id: In(listIds)
+    });
+
+    if (!lists.length) {
+      throw new Error('You need to provide at least one list to update');
+    }
+
+    await Promise.all(lists.map(async (list) => {
+      const listInput = listInputs.find(l => l.id === list.id);
+      const title = listInput && listInput.title;
+      const position = listInput && listInput.position;
+
+      if (title) {
+        list.title = title;
+      }
+
+      if (position) {
+        list.position = position;
+      }
+
+      await list.save();
+    }));
+
+    return lists;
   }
 
   @UseMiddleware(isAuthenticated)
