@@ -2,16 +2,16 @@ import { MutationFn, useMutation } from 'react-apollo-hooks';
 import {
   CreateCardMutation,
   CreateCardMutationVariables,
-  CardsByListIdQuery,
-  CardsByListIdQueryVariables
+  ListsByBoardIdQuery,
+  ListsByBoardIdQueryVariables
 } from '../../types/generated';
-import { createCardMutation, cardsByListIdQuery } from '../../utils/graphqlFileLoader';
+import { createCardMutation, listsByBoardIdQuery } from '../../utils/graphqlFileLoader';
 
-type UseCreateCardProps = (listId: number) => {
+type UseCreateCardProps = (listId: number, boardId: number) => {
   createCard: MutationFn<CreateCardMutation, CreateCardMutationVariables>
 };
 
-export const useCreateCard: UseCreateCardProps = (listId) => {
+export const useCreateCard: UseCreateCardProps = (listId, boardId) => {
   const createCard =
     useMutation<
       CreateCardMutation,
@@ -24,16 +24,28 @@ export const useCreateCard: UseCreateCardProps = (listId) => {
 
         try {
           const { createCard } = data;
-          const options = { query: cardsByListIdQuery, variables: { listId } };
-          const cardData = store.readQuery<CardsByListIdQuery, CardsByListIdQueryVariables>(options);
+          const options = { query: listsByBoardIdQuery, variables: { boardId } };
+          const listData = store.readQuery<ListsByBoardIdQuery, ListsByBoardIdQueryVariables>(options);
 
-          if (!cardData || !cardData.allCardsByListId) {
+          if (!listData || !listData.allListsByBoardId) {
             return;
           }
 
-          store.writeQuery<CardsByListIdQuery, CardsByListIdQueryVariables>({
+          const lists = listData.allListsByBoardId.map(list => {
+            if (list.id === listId) {
+              return {
+                ...list,
+                cards: [ ...list.cards || [], createCard ]
+              };
+            }
+            return list;
+          });
+
+          store.writeQuery<ListsByBoardIdQuery, ListsByBoardIdQueryVariables>({
             ...options,
-            data: { allCardsByListId: [ ...cardData.allCardsByListId, createCard ] }
+            data: {
+              allListsByBoardId: lists
+            }
           });
         } catch (e) {
           console.log('useCreateCard cache update error', e);
