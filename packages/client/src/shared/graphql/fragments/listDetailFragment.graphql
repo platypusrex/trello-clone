@@ -1,8 +1,12 @@
 #import './listFragment.graphql'
+#import './cardFragment.graphql'
 
 fragment ListDetail on List {
   ...List
   position
   createdAt
   updatedAt
+  cards {
+    ...Card
+  }
 }
