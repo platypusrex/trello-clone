@@ -15,7 +15,7 @@ export class CardResolver {
   ): Promise<Card[] | null> {
     const cards = await Card.find({
       where: { listId } ,
-      // order: { position: 'ASC' }
+      order: { position: 'ASC' }
     });
 
     return !cards ? null : cards;
@@ -36,10 +36,14 @@ export class CardResolver {
       throw new Error('A Card must be associated with a list.');
     }
 
+    const cards = await Card.find({ where: { listId } });
+    const position = cards.length;
+
     return await Card.create({
       title,
       creator,
       list,
+      position
     }).save();
   }
 
@@ -55,6 +59,18 @@ export class CardResolver {
     }
 
     await Card.delete(cardId);
+
+    const cards = await Card.find({
+      where: { listId: card.listId },
+      order: { position: 'ASC' },
+    });
+
+    cards.forEach(async (card, i) => {
+      if (card.position !== i) {
+        card.position = i;
+        await card.save();
+      }
+    });
 
     return true;
   }
