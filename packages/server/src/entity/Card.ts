@@ -31,6 +31,10 @@ export class Card extends BaseEntity {
   @Column('text')
   title: string;
 
+  @Field()
+  @Column()
+  position: number;
+
   @Field({ nullable: true })
   @Column('text', { nullable: true })
   description: string;

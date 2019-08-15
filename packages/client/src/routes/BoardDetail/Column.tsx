@@ -3,6 +3,15 @@ import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 import { BoardList } from './BoardList';
 import { AddList } from './AddList';
 import { ListDetail } from '../../shared/types/generated';
+import styled from '../../shared/styled';
+
+const ColumnWrapper = styled.div`
+  /* utility-name */
+`;
+
+const ColumnInnerWrapper = styled.div`
+  /* utility-name */
+`;
 
 interface ParentProps {
   list: ListDetail;
@@ -12,29 +21,34 @@ interface ParentProps {
 }
 
 export const ColumnComponent: React.FC<ParentProps> = ({ list, boardId, index, columnsLength }) => {
-  const draggableId = `${list.title}__${index}`;
-  const content = !!list.id
-    ? <BoardList list={list} boardId={boardId} columnsLength={columnsLength}/>
-    : <AddList boardId={boardId}/>;
+  const content = !!list.id ? (
+    <BoardList
+      list={list}
+      boardId={boardId}
+      columnsLength={columnsLength}
+    />
+  ) :
+  <AddList boardId={boardId}/>;
 
   return (
     <Draggable
       isDragDisabled={!list.id}
-      key={draggableId}
-      draggableId={draggableId}
-      index={index}>
+      key={list.title}
+      draggableId={list.title}
+      index={index}
+    >
       {(provided: DraggableProvided) => (
-        <div>
-          <div
+        <ColumnWrapper>
+          <ColumnInnerWrapper
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
             {content}
-          </div>
+          </ColumnInnerWrapper>
 
           {provided.placeholder}
-        </div>
+        </ColumnWrapper>
       )}
     </Draggable>
   );

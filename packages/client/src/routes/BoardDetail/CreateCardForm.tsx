@@ -8,11 +8,12 @@ import { createCardFormikConfig } from '../../shared/formUtils/createCard';
 
 interface ParentProps {
   listId: number;
+  boardId: number;
   onCancel: () => void;
 }
 
-export const CreateCardForm: React.FC<ParentProps> = ({ listId, onCancel }) => {
-  const { createCard } = useCreateCard(listId);
+export const CreateCardForm: React.FC<ParentProps> = ({ listId, boardId, onCancel }) => {
+  const { createCard } = useCreateCard(listId, boardId);
 
   return (
     <Formik {...createCardFormikConfig(createCard, listId, onCancel)}>

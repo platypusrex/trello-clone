@@ -29,6 +29,7 @@ type Card {
   id: Float!
   list: List!
   listId: Float!
+  position: Float!
   title: String!
   updatedAt: DateTime!
 }
@@ -58,6 +59,7 @@ type Mutation {
   login(input: LoginInput!): User
   register(input: RegisterInput!): User!
   updateListById(input: UpdateListInput!): List!
+  updateListsById(input: [UpdateListInput!]!): [List!]!
   updateTeamById(input: UpdateTeamInput!): Team!
 }
 
@@ -73,15 +75,18 @@ type Query {
   allUsers: [User!]
   boardById(boardId: Float!): Board
   getAllRecipes: [Recipe!]!
+  getRecipeById(recipeId: Float!): Recipe!
   hello(input: HelloInput!): String!
   me: User
   teamById(teamId: Float!): Team
 }
 
 type Recipe {
+  createdAt: DateTime!
   description: String
   id: String!
   title: String!
+  updatedAt: DateTime!
 }
 
 type Team {

@@ -1,5 +1,6 @@
 fragment Card on Card {
   id
+  listId
   title
   description
   updatedAt

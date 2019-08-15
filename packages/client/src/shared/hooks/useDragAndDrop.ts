@@ -1,74 +1,88 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ListDetail, UpdateListByIdMutation, UpdateListByIdMutationVariables } from '../types/generated';
+import {
+  ListDetail,
+  UpdateListsByIdMutation,
+  UpdateListsByIdMutationVariables
+} from '../types/generated';
 import { DropResult } from 'react-beautiful-dnd';
 import { MutationFn } from 'react-apollo-hooks';
-
-const reorder = (list: ListDetail[], startIndex: number, endIndex: number) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
-interface DragAndDropState {
-  columns: ListDetail[];
-}
+import {
+  getInitialDragAndDropState,
+  reorder,
+  DragAndDropState,
+  reorderCardMap,
+  persistListOrder
+} from '../utils/dragAndDropUtils';
+import { COLUMN } from '../constants/dragAndDrop';
 
 type UseDragAndDrop = (
   lists: ListDetail[],
-  updateList: MutationFn<UpdateListByIdMutation, UpdateListByIdMutationVariables>
-) => {
-  columns: ListDetail[];
+  updateList: MutationFn<UpdateListsByIdMutation, UpdateListsByIdMutationVariables>
+) => DragAndDropState & {
   onDragEnd: (result: DropResult) => void;
-}
+};
 
-export const useDragAndDrop: UseDragAndDrop = (lists, updateList) => {
+export const useDragAndDrop: UseDragAndDrop = (lists, updateLists) => {
   const isInitialMount = useRef(true);
-  const [ state, setState ] = useState<DragAndDropState>({columns: lists});
+  const [ state, setState ] = useState<DragAndDropState>(getInitialDragAndDropState(lists));
+
   const onDragEnd = useCallback(async (result: DropResult) => {
     const { source, destination } = result;
 
-    if (result.type !== 'COLUMN') {
+    if (!destination) {
       return;
     }
 
     if (
-      !destination ||
-      destination.index === source.index ||
-      !state.columns
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
     ) {
       return;
     }
 
-    const reorderedColumns = reorder(
-      state.columns,
-      source.index,
-      destination.index
-    );
+    if (result.type === COLUMN) {
+      const ordered: string[] = reorder(
+        state.ordered,
+        source.index,
+        destination.index
+      );
 
-    setState({ columns: reorderedColumns });
+      setState(prevState => ({
+        ...prevState,
+        ordered
+      }));
 
-    const listData: Array<{ id: number; position: number; }> =
-      reorderedColumns.map((list, i) => ({ id: list.id, position: i}));
+      await persistListOrder({
+        lists,
+        ordered,
+        updateLists
+      });
 
-    await Promise.all(
-      listData.map(async input =>
-        await updateList({ variables: { input } })
-      )
-    );
+      return;
+    }
 
-  }, [state.columns, updateList]);
+    const data = reorderCardMap({
+      cardMap: state.columns,
+      source,
+      destination,
+    });
+
+    setState(prevState => ({
+      ...prevState,
+      columns: data.cardMap,
+    }));
+
+  }, [state.columns, state.ordered, updateLists, lists]);
 
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
     } else {
-      if (lists.length !== state.columns.length) {
-        setState({ columns: lists });
+      if (JSON.stringify(lists) !== state.listString) {
+        setState(getInitialDragAndDropState(lists));
       }
     }
-  }, [lists, state.columns.length]);
+  }, [lists, state.listString]);
 
   return { ...state, onDragEnd };
 };

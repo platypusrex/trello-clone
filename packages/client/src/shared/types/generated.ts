@@ -127,6 +127,7 @@ export interface PersonalBoardsByUserIdQuery {
 export interface CardsByListIdQuery_allCardsByListId {
   __typename: "Card";
   id: number;
+  listId: number;
   title: string;
   description: string | null;
   updatedAt: any;
@@ -152,6 +153,7 @@ export interface CardsByListIdQueryVariables {
 export interface CreateCardMutation_createCard {
   __typename: "Card";
   id: number;
+  listId: number;
   title: string;
   description: string | null;
   updatedAt: any;
@@ -174,6 +176,16 @@ export interface CreateCardMutationVariables {
 // GraphQL mutation operation: CreateListMutation
 // ====================================================
 
+export interface CreateListMutation_createList_cards {
+  __typename: "Card";
+  id: number;
+  listId: number;
+  title: string;
+  description: string | null;
+  updatedAt: any;
+  createdAt: any;
+}
+
 export interface CreateListMutation_createList {
   __typename: "List";
   id: number;
@@ -181,6 +193,7 @@ export interface CreateListMutation_createList {
   position: number;
   createdAt: any;
   updatedAt: any;
+  cards: CreateListMutation_createList_cards[] | null;
 }
 
 export interface CreateListMutation {
@@ -215,6 +228,16 @@ export interface DeleteListByIdMutationVariables {
 // GraphQL query operation: ListsByBoardIdQuery
 // ====================================================
 
+export interface ListsByBoardIdQuery_allListsByBoardId_cards {
+  __typename: "Card";
+  id: number;
+  listId: number;
+  title: string;
+  description: string | null;
+  updatedAt: any;
+  createdAt: any;
+}
+
 export interface ListsByBoardIdQuery_allListsByBoardId {
   __typename: "List";
   id: number;
@@ -222,6 +245,7 @@ export interface ListsByBoardIdQuery_allListsByBoardId {
   position: number;
   createdAt: any;
   updatedAt: any;
+  cards: ListsByBoardIdQuery_allListsByBoardId_cards[] | null;
 }
 
 export interface ListsByBoardIdQuery {
@@ -240,6 +264,16 @@ export interface ListsByBoardIdQueryVariables {
 // GraphQL mutation operation: UpdateListByIdMutation
 // ====================================================
 
+export interface UpdateListByIdMutation_updateListById_cards {
+  __typename: "Card";
+  id: number;
+  listId: number;
+  title: string;
+  description: string | null;
+  updatedAt: any;
+  createdAt: any;
+}
+
 export interface UpdateListByIdMutation_updateListById {
   __typename: "List";
   id: number;
@@ -247,6 +281,7 @@ export interface UpdateListByIdMutation_updateListById {
   position: number;
   createdAt: any;
   updatedAt: any;
+  cards: UpdateListByIdMutation_updateListById_cards[] | null;
 }
 
 export interface UpdateListByIdMutation {
@@ -255,6 +290,42 @@ export interface UpdateListByIdMutation {
 
 export interface UpdateListByIdMutationVariables {
   input: UpdateListInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: UpdateListsByIdMutation
+// ====================================================
+
+export interface UpdateListsByIdMutation_updateListsById_cards {
+  __typename: "Card";
+  id: number;
+  listId: number;
+  title: string;
+  description: string | null;
+  updatedAt: any;
+  createdAt: any;
+}
+
+export interface UpdateListsByIdMutation_updateListsById {
+  __typename: "List";
+  id: number;
+  title: string;
+  position: number;
+  createdAt: any;
+  updatedAt: any;
+  cards: UpdateListsByIdMutation_updateListsById_cards[] | null;
+}
+
+export interface UpdateListsByIdMutation {
+  updateListsById: UpdateListsByIdMutation_updateListsById[];
+}
+
+export interface UpdateListsByIdMutationVariables {
+  input: UpdateListInput[];
 }
 
 /* tslint:disable */
@@ -588,6 +659,7 @@ export interface CardDetail_assignedTo {
 export interface CardDetail {
   __typename: "Card";
   id: number;
+  listId: number;
   title: string;
   description: string | null;
   updatedAt: any;
@@ -608,6 +680,7 @@ export interface CardDetail {
 export interface Card {
   __typename: "Card";
   id: number;
+  listId: number;
   title: string;
   description: string | null;
   updatedAt: any;
@@ -622,6 +695,16 @@ export interface Card {
 // GraphQL fragment: ListDetail
 // ====================================================
 
+export interface ListDetail_cards {
+  __typename: "Card";
+  id: number;
+  listId: number;
+  title: string;
+  description: string | null;
+  updatedAt: any;
+  createdAt: any;
+}
+
 export interface ListDetail {
   __typename: "List";
   id: number;
@@ -629,6 +712,7 @@ export interface ListDetail {
   position: number;
   createdAt: any;
   updatedAt: any;
+  cards: ListDetail_cards[] | null;
 }
 
 /* tslint:disable */
