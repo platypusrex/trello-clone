@@ -22,6 +22,7 @@ export const deleteBoardByIdMutation = loader('../graphql/board/deleteBoardByIdM
 // list queries and mutations
 export const listsByBoardIdQuery = loader('../graphql/list/listsByBoardIdQuery.graphql');
 export const updateListByIdMutation = loader('../graphql/list/updateListByIdMutation.graphql');
+export const updateListsByIdMutation = loader('../graphql/list/updateListsByIdMutation.graphql');
 export const createListMutation = loader('../graphql/list/createListMutation.graphql');
 export const deleteListByIdMutation = loader('../graphql/list/deleteListByIdMutation.graphql');
 
