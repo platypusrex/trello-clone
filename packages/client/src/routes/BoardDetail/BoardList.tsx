@@ -35,12 +35,12 @@ const BoardListWrapper = styled(Card)<CardProps>`
   }
 `;
 
-const BoardListInnerWrapper = styled('div')<{ isFormVisible: boolean; }>`
-  min-height: ${({ isFormVisible }) => isFormVisible ? 'auto' : '25px'};
+const BoardListInnerWrapper = styled.div`
+  /* no-styles */
 `;
 
-const BoardListDropZone = styled.div`
-  height: 100%;
+const BoardListDropZone = styled('div')<{ isFormVisible: boolean; }>`
+  min-height: ${({ isFormVisible }) => isFormVisible ? 'auto' : '25px'};
 `;
 
 interface ParentProps {
@@ -71,8 +71,9 @@ export const BoardList: React.FC<ParentProps> = ({ list, boardId, columnsLength 
           ignoreContainerClipping={true}
         >
           {(provided: DroppableProvided) => (
-            <BoardListInnerWrapper isFormVisible={isFormVisible}>
+            <BoardListInnerWrapper>
               <BoardListDropZone
+                isFormVisible={isFormVisible}
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
