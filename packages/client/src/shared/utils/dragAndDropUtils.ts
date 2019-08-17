@@ -2,7 +2,7 @@ import { Card, ListDetail, UpdateListsByIdMutation, UpdateListsByIdMutationVaria
 import { DraggableLocation } from 'react-beautiful-dnd';
 import { MutationFn } from 'react-apollo-hooks';
 
-interface CardMap {
+interface ListMap {
   [key: string]: ListDetail;
 }
 
@@ -11,12 +11,12 @@ interface CardMap {
  * @param lists - ListDetail[]
  */
 
-export function createCardMap (lists: ListDetail[]): CardMap {
+export function createListMap (lists: ListDetail[]): ListMap {
   return [...lists].reduce((acc, cur) => ({ ...acc, [cur.title]: cur }), {});
 }
 
 export interface DragAndDropState {
-  columns: CardMap;
+  columns: ListMap;
   ordered: string[];
   listString: string;
 }
@@ -27,7 +27,7 @@ export interface DragAndDropState {
  */
 
 export function getInitialDragAndDropState (lists: ListDetail[]): DragAndDropState {
-  const columns = createCardMap(lists);
+  const columns = createListMap(lists);
   const ordered = Object.keys(columns);
   const listString = JSON.stringify(lists);
 
@@ -50,22 +50,22 @@ export const reorder = (list: any[], startIndex: number, endIndex: number) => {
 };
 
 interface ReorderCardMapArgs {
-  cardMap: CardMap;
+  listMap: ListMap;
   source: DraggableLocation;
   destination: DraggableLocation;
 }
 
 interface ReorderCardMapResult {
-  cardMap: CardMap;
+  listMap: ListMap;
 }
 
-export const reorderCardMap = ({
-  cardMap,
+export const reorderListMap = ({
+  listMap,
   source,
   destination
 }: ReorderCardMapArgs): ReorderCardMapResult => {
-  const currentList = cardMap[source.droppableId];
-  const nextList = cardMap[destination.droppableId];
+  const currentList = listMap[source.droppableId];
+  const nextList = listMap[destination.droppableId];
 
   const currentCards: Card[]  = [...currentList.cards || []];
   const nextCards: Card[] = [...nextList.cards || []];
@@ -79,8 +79,8 @@ export const reorderCardMap = ({
       destination.index,
     );
 
-    const result: CardMap = {
-      ...cardMap,
+    const result: ListMap = {
+      ...listMap,
       [source.droppableId]: {
         ...currentList,
         cards: reordered,
@@ -88,7 +88,7 @@ export const reorderCardMap = ({
     };
 
     return {
-      cardMap: result,
+      listMap: result,
     };
   }
 
@@ -99,8 +99,8 @@ export const reorderCardMap = ({
   // insert into next
   nextCards.splice(destination.index, 0, targetCard);
 
-  const result: CardMap = {
-    ...cardMap,
+  const result: ListMap = {
+    ...listMap,
     [source.droppableId]: {
       ...currentList,
       cards: currentCards
@@ -112,7 +112,7 @@ export const reorderCardMap = ({
   };
 
   return {
-    cardMap: result,
+    listMap: result,
   };
 };
 

@@ -7,7 +7,7 @@ import { CreateBoardInput } from './inputs/CreateBoardInput';
 import { isAuthenticated } from './middleware/isAuthenticated';
 
 
-@Resolver()
+@Resolver(Board)
 export class BoardResolver {
   @Query(() => [Board], { nullable: true })
   async allBoards (): Promise<Board[] | null> {

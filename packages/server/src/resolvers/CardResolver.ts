@@ -6,7 +6,7 @@ import { User } from '../entity/User';
 import { List } from '../entity/List';
 import { Card } from '../entity/Card';
 
-@Resolver()
+@Resolver(Card)
 export class CardResolver {
   @UseMiddleware(isAuthenticated)
   @Query(() => [Card], { nullable: true })

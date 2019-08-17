@@ -34,7 +34,7 @@ export class Team extends BaseEntity {
   @Column({ type: 'varchar', length: 50 })
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column('text', { nullable: true })
   description: string;
 

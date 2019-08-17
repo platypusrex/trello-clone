@@ -9,7 +9,7 @@ import { confirmUserPrefix } from '../constants/redisPrefixes';
 import { Context } from '../types/context';
 import { redis } from '../redis';
 
-@Resolver()
+@Resolver(User)
 export class UserResolver {
   @Query(() => [User], { nullable: true })
   async allUsers (): Promise<User[] | null> {

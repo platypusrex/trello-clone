@@ -1,8 +1,19 @@
 import { Field, InputType } from 'type-graphql';
 import { Length } from 'class-validator';
+import { List } from '../../entity/List';
+import { Card } from '../../entity/Card';
 
 @InputType()
-export class UpdateListInput {
+class CardInput implements Partial<Card> {
+  @Field()
+  id: number;
+
+  @Field()
+  position: number;
+}
+
+@InputType()
+export class UpdateListInput implements Partial<List> {
   @Field()
   id: number;
 
@@ -12,4 +23,7 @@ export class UpdateListInput {
 
   @Field({ nullable: true })
   position: number;
+
+  @Field(() => [CardInput], { nullable: true })
+  cardsInput: CardInput[];
 }

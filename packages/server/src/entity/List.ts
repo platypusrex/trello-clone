@@ -45,6 +45,6 @@ export class List extends BaseEntity {
   board: Lazy<Board>;
 
   @Field(() => [Card], { nullable: true })
-  @OneToMany(() => Card, card => card.list, { lazy: true })
-  cards: Lazy<Card[]>;
+  @OneToMany(() => Card, card => card.list, { lazy: true, nullable: true })
+  cards: Card[];
 }

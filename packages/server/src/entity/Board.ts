@@ -36,7 +36,7 @@ export class Board extends BaseEntity {
   @Column({ type: 'varchar', length: 100 })
   title: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column('text', { nullable: true })
   description: string;
 
@@ -44,7 +44,7 @@ export class Board extends BaseEntity {
   @Column()
   creatorId: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   teamId: number;
 
@@ -64,6 +64,6 @@ export class Board extends BaseEntity {
   team: Lazy<Team>;
 
   @Field(() => [List], { nullable: true })
-  @OneToMany(() => List, list => list.board, { lazy: true })
+  @OneToMany(() => List, list => list.board, { lazy: true, nullable: true })
   lists: Lazy<List[]>;
 }

@@ -6,7 +6,7 @@ import { Board } from '../entity/Board';
 import { UpdateListInput } from './inputs/UpdateListInput';
 import { In } from 'typeorm';
 
-@Resolver()
+@Resolver(List)
 export class ListResolver {
   @UseMiddleware(isAuthenticated)
   @Query(() => [List], { nullable: true })
@@ -72,7 +72,7 @@ export class ListResolver {
   @UseMiddleware(isAuthenticated)
   @Mutation(() => [List])
   async updateListsById (
-    @Arg('input', () => [UpdateListInput]) listInputs: [UpdateListInput]
+    @Arg('input', () => [UpdateListInput]) listInputs: [UpdateListInput],
   ): Promise<List[]> {
     const listIds = listInputs.map(listInput => listInput.id);
 

@@ -10,7 +10,7 @@ import {
   getInitialDragAndDropState,
   reorder,
   DragAndDropState,
-  reorderCardMap,
+  reorderListMap,
   persistListOrder
 } from '../utils/dragAndDropUtils';
 import { COLUMN } from '../constants/dragAndDrop';
@@ -61,15 +61,15 @@ export const useDragAndDrop: UseDragAndDrop = (lists, updateLists) => {
       return;
     }
 
-    const data = reorderCardMap({
-      cardMap: state.columns,
+    const { listMap } = reorderListMap({
+      listMap: state.columns,
       source,
       destination,
     });
 
     setState(prevState => ({
       ...prevState,
-      columns: data.cardMap,
+      columns: listMap,
     }));
 
   }, [state.columns, state.ordered, updateLists, lists]);

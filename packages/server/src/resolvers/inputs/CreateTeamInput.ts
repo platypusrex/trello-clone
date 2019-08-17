@@ -1,8 +1,9 @@
 import { Field, InputType } from 'type-graphql';
 import { Length } from 'class-validator';
+import { Team } from '../../entity/Team';
 
 @InputType()
-export class CreateTeamInput {
+export class CreateTeamInput implements Partial<Team> {
   @Field()
   @Length(1, 50)
   name: string;

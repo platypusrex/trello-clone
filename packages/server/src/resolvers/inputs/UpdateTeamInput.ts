@@ -1,8 +1,9 @@
 import { Field, InputType } from 'type-graphql';
 import { Length } from 'class-validator';
+import { Team } from '../../entity/Team';
 
 @InputType()
-export class UpdateTeamInput {
+export class UpdateTeamInput implements Partial<Team> {
   @Field()
   id: number;
 

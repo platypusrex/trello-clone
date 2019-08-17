@@ -6,7 +6,7 @@ import { Context } from '../types/context';
 import { isAuthenticated } from './middleware/isAuthenticated';
 import { UpdateTeamInput } from './inputs/UpdateTeamInput';
 
-@Resolver()
+@Resolver(Team)
 export class TeamResolver {
   @Query(() => [Team], { nullable: true })
   async allTeams(): Promise<Team[] | null> {

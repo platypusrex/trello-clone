@@ -4,7 +4,7 @@ import { IsEmailUnique } from '../decorators/IsEmailUnique';
 import { PasswordMixin } from '../mixins/PasswordMixin';
 
 @InputType()
-export class RegisterInput extends PasswordMixin(class {}){
+export class RegisterInput extends PasswordMixin(class {}) {
   @Field()
   @Length(1, 255)
   firstName: string;
